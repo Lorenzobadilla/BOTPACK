@@ -17,7 +17,7 @@ module.exports.run = async function({ api, event, args }) {
     if(keySearch.includes("-") == false) return api.sendMessage('Please enter in the format, example: pinterest jujutsu kaisen - 10 (10 limit only)', event.threadID, event.messageID)
     const keySearchs = keySearch.substr(0, keySearch.indexOf('-'))
     const numberSearch = keySearch.split("-").pop() || 6
-    const res = await axios.get(`https://lorenzo-rest-api.onrender.com/pinterest?search=${encodeURIComponent(keySearchs)}&count=10`);
+    const res = await axios.get(`https://lorenzorestapi.onrender.com/pinterest?search=${encodeURIComponent(keySearchs)}&count=10`);
     const data = res.data.data;
     var num = 0;
     var imgData = [];

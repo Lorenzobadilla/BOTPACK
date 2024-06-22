@@ -24,7 +24,7 @@
   "eventDisabled": [],
   "BOTNAME": "Lorenzo",
   "OWNERLINK": "https://www.facebook.com/LorenzoC.Badilla",
-  "PREFIX": "/",
+  "PREFIX": "!",
   "ADMINBOT": [
     "100082342305590",
     "100082342305590"
