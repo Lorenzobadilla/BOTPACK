@@ -8,7 +8,7 @@ module.exports.config = {
   hasPermission:0,
   version: "5.6.7",
   cooldown: 5,
-  aliases: ["Gemini","gemini"],
+  aliases: ["gemini"],
   usage: "gemini [ask]"
 };
 
@@ -20,7 +20,7 @@ module.exports.run = async function ({ api, event, args }) {
   if (!prompt) return api.sendMessage(`Please enter a prompt.`, event.threadID);
   api.sendTypingIndicator(event.threadID);
   try {
-    const geminiApi = `https://lorenzo-rest-api.onrender.com/api/gemini`;
+    const geminiApi = `https://lorenzorestapi.onrender.com/api/gemini`;
     if (event.type == "message_reply") {
       if (event.messageReply.attachments[0]?.type == "photo") {
         url = encodeURIComponent(event.messageReply.attachments[0].url);

@@ -13,7 +13,7 @@ module.exports.config = {
 module.exports.run = async ({ api, event,args }) => {
 const axios = global.nodemodule["axios"];
 let lorenzo = args.join(" ");
-const res = await axios.get(`https://lorenzo-rest-api.onrender.com/tinyurl?url=${lorenzo}`);
+const res = await axios.get(`https://lorenzorestapi.onrender.com/tinyurl?url=${lorenzo}`);
 var plaintext = res.data.result;
 return api.sendMessage(`${plaintext}`, event.threadID, event.messageID)
 }

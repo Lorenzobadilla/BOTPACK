@@ -26,7 +26,7 @@ module.exports.run = async function({ api, event, args }) {
 
 		api.sendMessage("⏱️ | Searching, please wait...", event.threadID);
 
-		const response = await axios.get(`https://lorenzo-rest-api.onrender.com/tiksearch?search=/tiksearch?search=query=${encodeURIComponent(searchQuery)}`);
+		const response = await axios.get(`https://lorenzorestapi.onrender.com/tiksearch?search=/tiksearch?search=query=${encodeURIComponent(searchQuery)}`);
 		const videos = response.data.data.videos;
 
 		if (!videos || videos.length === 0) {
