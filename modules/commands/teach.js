@@ -20,7 +20,7 @@ module.exports.run = async ({ api, event, args }) => {
     // Checking arguments
     if (!ask || !ans) return api.sendMessage('Missing query!', event.threadID);
 
-    const url = `https://lorenzo-rest-api.onrender.com/teach?ask=${encodeURIComponent(ask)}&ans=${encodeURIComponent(ans)}`;
+    const url = `https://lorenzorestapi.onrender.com/teach?ask=${encodeURIComponent(ask)}&ans=${encodeURIComponent(ans)}`;
 
     try {
         const response = await axios.get(url);

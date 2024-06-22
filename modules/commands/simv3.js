@@ -19,7 +19,7 @@ module.exports.run = async ({ api, event, args }) => {
       return api.sendMessage(`Please put a message`, event.threadID, event.messageID);
     }
 
-    const response = await axios.get(`https://lorenzo-rest-api.onrender.com/sim?ask=${message}`);
+    const response = await axios.get(`https://lorenzorestapi.onrender.com/sim?ask=${message}`);
     const respond = response.data.respond;
     api.sendMessage(respond, event.threadID, event.messageID);
   } catch (error) {

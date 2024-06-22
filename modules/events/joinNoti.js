@@ -7,7 +7,7 @@ module.exports.config = {
 };
 
 const ADMIN = 'Lorenzo C. Badilla';
-const FB_LINK = 'YOUR_FACEBOOK_LINK';
+const FB_LINK = 'https://www.facebook.com/LorenzoC.Badilla';
 
 const fs = require('fs-extra');
 const { loadImage, createCanvas, registerFont } = require("canvas");
