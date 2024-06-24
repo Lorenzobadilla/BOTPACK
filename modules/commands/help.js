@@ -161,15 +161,15 @@ module.exports.run = async function ({ api, event, args, getText }) {
     const fs = require("fs-extra");
     const imgP = [];
     const img = [
-      "https://i.imgur.com/kM6gmAf.jpg",
-      "https://i.imgur.com/ziJuxnD.jpg",
-      "https://i.imgur.com/JmWimOc.gif",
-      "https://i.imgur.com/U7NQoLP.gif",
-      "https://i.imgur.com/9My3K5w.jpg",
-      "https://i.imgur.com/4dwdpG9.jpg",
-      "https://i.imgur.com/XetbfAe.jpg"
+      "https://i.imgur.com/xsVi6ul.jpeg",
+      "https://i.imgur.com/QMHApXb.jpeg",
+      "https://i.imgur.com/MbRy1Js.jpeg",
+      "https://i.imgur.com/DTacatn.jpeg",
+      "https://i.imgur.com/1Mdp0xT.jpeg",
+      "https://i.imgur.com/u6pSXZa.jpeg",
+      "https://i.imgur.com/5I3cvND.jpeg"
     ];
-    const path = __dirname + "/cache/menu.gif";
+    const path = __dirname + "/cache/help.jpeg";
     const rdimg = img[Math.floor(Math.random() * img.length)];
 
     const { data } = await axios.get(rdimg, {
