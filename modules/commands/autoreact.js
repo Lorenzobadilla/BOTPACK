@@ -1,45 +1,46 @@
 const fs = require("fs");
+const path = require("path");
+const axios = require("axios");
+
+const autoreactPath = path.join(__dirname, "cache", "autoreact.json");
+
+let isEnabled = fs.existsSync(autoreactPath) ? JSON.parse(fs.readFileSync(autoreactPath)) : false;
 
 module.exports.config = {
-        name: "autoreact",
-  version: "1.0.0",
-        hasPermssion: 0,
-        credits: "Minami Tatsuo",
-        description: "non prefix reply",
-  usePrefix: false,
-        commandCategory: "not command",
-        usages: "noprefix",
-    cooldowns: 0,
+   name: "autoreact",
+   version: "9.0.5",
+   hasPermssion: 0,
+   credits: "Lorenzo",
+    usePrefix: true,
+   description: "Automatically reacts to messages containing specific keywords",
+   commandCategory: "fun",
+   usages: "autoreact [on/off]",
+   cooldowns: 0,
 };
- 
-module.exports.handleEvent = function({ api, event, client, __GLOBAL }) {
- let haha = event.body.toLowerCase();
-  if (haha.includes("lol") || haha.includes("😂") || haha.includes("haha") || haha.includes("pagal") || haha.includes("mental") || haha.includes("oye") || haha.includes("love") || haha.includes("jani") || haha.includes("bc") || haha.includes("busy") || 
-haha.includes("group") || haha.includes("kis") || haha.includes("kuta") || haha.includes("jan") || haha.includes("oh")){                 
-    return api.setMessageReaction("😆", event.messageID, (err) => {}, true)
-    api.markAsSeen(1, (err) => {});
-  }
-    if (haha.includes("death") || haha.includes("mar") || haha.includes("udas") || haha.includes("☹️") || haha.includes("hurt") || haha.includes("please") || haha.includes("pls") || haha.includes("😢") || haha.includes("😔") || haha.includes("🥺") || haha.includes("sad")){
-      return  api.setMessageReaction("😢", event.messageID, (err) => {}, true);
-}
-  if (haha.includes("🥵") || haha.includes("umah") || haha.includes("💋") || haha.includes("kiss") || haha.includes("babu") || haha.includes("baby") || haha.includes("wow") || haha.includes("wah") || haha.includes("relationship") || haha.includes("gf") || haha.includes("baby") || haha.includes("omg")){
-    return api.setMessageReaction("😘", event.messageID, (err) => {}, true)
-  }
-  if (haha.includes("tite") || haha.includes("Tite")){
-    api.sendMessage("tite ka nang tite lika dito subuin moto.", event.threadID, event.messageID)
-  }
-  if (haha.includes("Umay") || haha.includes("umay")){
-    api.sendMessage("Umay talaga wala kang tatay eh", event.threadID, event.messageID)
-  }
-  if (haha.includes("bot") || haha.includes("Bot")){
-    api.sendMessage("oo na bot na kinginamo ka", event.threadID, event.messageID)
-  }
-if (haha.includes("Lorenzo") || haha.includes("lorenzo")){
-    api.sendMessage("Ralph pogi malake etits", event.threadID, event.messageID)
-}
-  if (haha.includes("kick") || haha.includes("Kick")){
-    api.sendMessage("ikaw dapat kinikick eh wala ka namang dulot sa pinas putanginamo di ka mahal ng magulang mo bobo ka", event.threadID, event.messageID)
+
+module.exports.run = async function ({ api, event, args }) {
+  try {
+      if (args[0] === "off") {
+          isEnabled = false;
+          fs.writeFileSync(autoreactPath, JSON.stringify(isEnabled, null, 2)); 
+          return api.sendMessage("Auto react is now turned off", event.threadID, event.messageID);
+      } else if (args[0] === "on") {
+          isEnabled = true;
+          fs.writeFileSync(autoreactPath, JSON.stringify(isEnabled, null, 2)); 
+          return api.sendMessage("Auto react is now turned on", event.threadID, event.messageID);
       }
-}
-        module.exports.run = function({ api, event, client, __GLOBAL }) {
-        }
+  } catch (error) {
+      console.error(error);
+  }
+};
+
+module.exports.handleEvent = async function ({ api, event }) {
+  try {
+      if (!isEnabled) return;
+      const response = await axios.get(`https://lorenzorestapi.onrender.com/react?q=${encodeURIComponent(event.body)}`);
+      const reaction = response.data.react;
+      api.setMessageReaction(reaction, event.messageID, (err) => {}, true);
+  } catch (error) {
+      console.error(error);
+  }
+};
