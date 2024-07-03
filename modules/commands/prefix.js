@@ -14,7 +14,7 @@ module.exports.config = {
 module.exports.handleEvent = function ({ api, event, client, __GLOBAL }) {
     var { threadID, messageID, senderID } = event;
     var senderName = "";
-    api.getUserInfo(senderID, (err, result) => {
+    api.getUserInfo(senderName, (err, result) => {
         if (err) {
             console.error(err);
             senderName = "";
@@ -46,7 +46,7 @@ module.exports.handleEvent = function ({ api, event, client, __GLOBAL }) {
 
             // Send voice message with additional information
             const voiceFile = fs.readFileSync(
-                __dirname + "/noprefix/prefix.gif"
+                __dirname + "/noprefix/prefix.jpeg"
             );
             api.sendMessage(
                 {
