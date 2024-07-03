@@ -7,7 +7,7 @@
   <img alt="Version" src="https://img.shields.io/badge/dynamic/json?color=brightgreen&label=code%20version&prefix=v&query=%24.version&url=https://github.com/YANDEVA/BotPack/raw/main/package.json&style=flat-square">
   <img alt="Visitors" src="https://visitor-badge.laobi.icu/badge?style=flat-square&page_id=YANDEVA.BotPack">
 </p>
-A Simple BotPack for starting a Messenger chatbot.
+A Simple BotPack for starting a Messenger chatbot modified by Lorenzo.
 
 <img align="center" src="https://i.ibb.co/gMMvsYf/20240125-225244-0000.png"></a>
 
@@ -53,6 +53,9 @@ By setting this to false, some commands like checktt, rankup and other commands 
   - Added sharecontact.js
   - Bug fixed!
   - HandleReply.js issue fixed!
+  - added New Command!
+  - fixed error
+  - deleted old ai cmd!
 </details>
 
 <details>
