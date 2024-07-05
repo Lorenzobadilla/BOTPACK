@@ -34,7 +34,7 @@ const args = event.body.split(" ");
      let response = await axios.post(
      "https://shoti-srv1.onrender.com/api/v1/get",
      {
-     apikey: "$shoti-1hv47t26a4mj5uffs3g",
+     apikey: "$shoti-1i1uri0qi1a9dh2od8g",
      },
       );
     var file = fs.createWriteStream(__dirname + "/cache/shoti.mp4");

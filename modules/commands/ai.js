@@ -1,39 +1,49 @@
-const { Hercai } = require('hercai');
-const herc = new Hercai();
+const axios = require("axios");
 
 module.exports.config = {
-	name: 'ai',
-	version: '1.1.0',
-	hasPermssion: 0,
-	credits: 'Yan Maglinte | Liane Cagara',
-	description: 'An AI command using Hercai API!',
-	usePrefix: false,
-	allowPrefix: true,
-	commandCategory: 'chatbots',
-	usages: 'Ai [prompt]',
-	cooldowns: 5,
+		name: "ai",
+		version: "1.0.0",
+		credits: "Lorenzo",
+		description: "Interact with Mixtral AI",
+	commandCategory: "ai",
+	usage: "ai [question]",
+		usePrefix: false,
+		cooldown: 0,
+		aliases: ["ai"]
 };
 
-module.exports.run = async function ({ api, event, args, box }) {
-	const prompt = args.join(' ');
-	if (!box) {
-		return api.sendMessage(`Unsupported.`, event.threadID);
-	}
+module.exports.run = async function ({ api, event, args }) {
+		try {
+				let q = args.join(" ");
+				if (!q) {
+						return api.sendMessage("Please provide a question. For example: ai what is your name?", event.threadID, event.messageID);
+				}
 
-	try {
-		// Available Models: "v3", "v3-32k", "turbo", "turbo-16k", "gemini"
-		if (!prompt) {
-			box.reply('Please specify a message!');
-			box.react('❓');
-		} else {
-			const info = await box.reply(`🔍 |Answering please wait..`);
-			box.react('⏱️');
-			const response = await herc.question({ model: 'v3', content: prompt });
-			await box.edit(response.reply, info.messageID);
-			box.react('');
+				api.sendMessage("Answering your answer..", event.threadID, async (err, info) => {
+						if (err) {
+								console.error("Error sending initial message:", err);
+								return api.sendMessage("An error occurred while processing your request.", event.threadID);
+						}
+
+						try {
+
+								const userInfo = await api.getUserInfo(event.senderID);
+								const senderName = userInfo[event.senderID].name;
+
+
+								const response = await axios.get(`https://joshweb.click/api/mixtral-8b?q=${encodeURIComponent(q)}`);
+								const answer = response.data.result;
+
+
+								const finalMessage = `${answer}\n\nAsked by: ${senderName}`;
+								api.sendMessage(finalMessage, event.threadID);
+						} catch (error) {
+								console.error("Error fetching AI response or user info:", error);
+								api.sendMessage("An error occurred while processing your request.", event.threadID);
+						}
+				});
+		} catch (error) {
+				console.error("Error in ai command:", error);
+				api.sendMessage("An error occurred while processing your request.", event.threadID);
 		}
-	} catch (error) {
-		box.reply('⚠️ Something went wrong: ' + error);
-		box.react('⚠️');
-	}
 };

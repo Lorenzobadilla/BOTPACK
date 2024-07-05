@@ -1,61 +1,37 @@
 const axios = require('axios');
-
-async function getUserNames(api, uid) {
-  try {
-    const userInfo = await api.getUserInfo([uid]);
-    return Object.values(userInfo).map(user => user.name || `User${uid}`);
-  } catch (error) {
-    console.error('Error getting user names:', error);
-    return [];
-  }
-}
-
-function formatFont(text) { 
-  const fontMapping = {
-    a: "𝚊", b: "𝚋", c: "𝚌", d: "𝚍", e: "𝚎", f: "𝚏", g: "𝚐", h: "𝚑", i: "𝚒", j: "𝚓", k: "𝚔", l: "𝚕", m: "𝚖",
-    n: "𝚗", o: "𝚘", p: "𝚙", q: "𝚚", r: "𝚛", s: "𝚜", t: "𝚝", u: "𝚞", v: "𝚟", w: "𝚠", x: "𝚡", y: "𝚢", z: "𝚣",
-    A: "𝙰", B: "𝙱", C: "𝙲", D: "𝙳", E: "𝙴", F: "𝙵", G: "𝙶", H: "𝙷", I: "𝙸", J: "𝙹", K: "𝙺", L: "𝙻", M: "𝙼",
-    N: "𝙽", O: "𝙾", P: "𝙿", Q: "𝚀", R: "𝚁", S: "𝚂", T: "𝚃", U: "𝚄", V: "𝚅", W: "𝚆", X: "𝚇", Y: "𝚈", Z: "𝚉"
-  };
-
-  return text.split('').map(char => fontMapping[char] || char).join('');
-}
+const moment = require('moment-timezone');
 
 module.exports.config = {
-  name: 'snowflakes',
-  version: '1.1.1',
-  hasPermssion: 0,
+  name: 'Snowflakes',
+  version: '1.0.0',
   role: 0,
-  credits: 'hashier',
-  description: 'powered by Snowflakes Ai',
-  usePrefix: false,
   hasPrefix: false,
-  commandCategory: 'snowflakes',
-  usages: '[prompt]',
-  usage: 'prompt',
-  cooldowns: 0,
-  aliases: ["snowai"],
-  cooldown: 0,
+  aliases: ['snow', 'Snowflakes'],
+  description: "An AI command powered by Snowflakes AI",
+  usage: "snowflakes [prompt]",
+  credits: 'churchill,modified by joshua apostol',
+  cooldown: 3,
 };
 
 module.exports.run = async function({ api, event, args }) {
-  const uid = event.senderID;
-  const userNames = await getUserNames(api, uid);
-  const user = args.join(" ");
+  const input = args.join(' ');
+  const timeString = moment.tz('Asia/Manila').format('LLL');
+
+  if (!input) {
+    api.sendMessage(`𝗥⃪𝗘⃪𝗦⃪𝗣⃪𝗢⃪𝗡⃪𝗗⃪ 𝗔⃪𝗜⃪\n\nPlease provide a question/query.`, event.threadID, event.messageID);
+    return;
+  }
+
+  api.sendMessage(`🔍Searching for Snowflakes AI response....`, event.threadID, event.messageID);
 
   try {
-    if (!user) { 
-      return api.sendMessage("Please provide a question first!", event.threadID, event.messageID);
+    const { data } = await axios.get(`https://hashier-api-snowflake.vercel.app/api/snowflake?ask=${encodeURIComponent(input)}`);
+    if (data.response) {
+      api.sendMessage(`𝗥⃪𝗘⃪𝗦⃪𝗣⃪𝗢⃪𝗡⃪𝗗⃪ 𝗔⃪𝗜⃪\n━━━━━━━━━━━━━━━\n\n${data.response}\n\n${timeString}\n\n`, event.threadID, event.messageID);
+    } else {
+      api.sendMessage('No response found.', event.threadID, event.messageID);
     }
-
-    const searchMessage = await api.sendMessage(`🔍𝙎𝙚𝙖𝙧𝙘𝙝𝙞𝙣𝙜 𝙋𝙡𝙚𝙖𝙨𝙚 𝙒𝙖𝙞𝙩....`, event.threadID);
-    const response = await axios.get(`https://hashier-api-snowflake.vercel.app/api/snowflake?ask=${encodeURIComponent(user)}`);
-    const responseData = response.data;
-    const content = formatFont(responseData.response);
-    await api.sendMessage(`❄️ 𝗦𝗡𝗢𝗪𝗙𝗟𝗔𝗞𝗘𝗦 (𝐀𝐈)\n\n🖋️ Ans: '${content}'\n\n👤 Question Asked by: ${userNames.join(', ')}`, event.threadID);
-
-  } catch (err) {
-    console.error(err);
-    return api.sendMessage("An error occurred while processing your request.", event.threadID, event.messageID);
-  }  
-}
+  } catch (error) {
+    api.sendMessage('An error occurred while processing your request.', event.threadID, event.messageID);
+  }
+};
