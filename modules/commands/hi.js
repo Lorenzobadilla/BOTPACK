@@ -8,7 +8,7 @@ async function getUserName(api, senderID) {
   }
 }
 
-let hiFlag = true;//change it if you want to automatically  don't turn on anymore set to true to turn on set to off if you want off
+let hiFlag = false;//change it if you want to automatically  don't turn on anymore set to true to turn on set to off if you want off
 
 const config = {
     name: "hi",
