@@ -63,7 +63,7 @@
     "delayUnsend": 60
   },
   "adminUpdate": {
-    "autoUnsend": true,
+    "autoUnsend": false,
     "sendNoti": true,
     "timeToUnsend": 10
   },
